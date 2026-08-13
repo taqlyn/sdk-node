@@ -23,7 +23,7 @@ cd packages/sdk-node && bun install && bun run build
 ## Quickstart — create a short link
 
 ```bash
-export TAQLYN_BASE_URL=http://localhost:8080
+export TAQLYN_BASE_URL=https://api.rutvik.qzz.io
 export TAQLYN_CLIENT_ID=app_test_...          # from Keys.issue (sandbox)
 export TAQLYN_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----
 ...
