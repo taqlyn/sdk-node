@@ -42,6 +42,8 @@ const client = new TaqlynClient({
 const link = await client.createShortLink({
   destinationWeb: "https://example.com/offer",
   mode: "web_only",
+  trackUniqueUsers: true, // Starter+ — hashed unique visitors on click
+  trackOpens: true, // Starter+ — SDK reports POST /v1/events/open
 });
 
 console.log(link.shortUrl); // e.g. https://go.localhost/Ab12Cd

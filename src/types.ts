@@ -10,6 +10,8 @@ export interface CreateShortLinkInput {
   params?: Record<string, unknown>;
   /** Optional; must match credential env when set. */
   env?: ShortLinkEnv;
+  trackUniqueUsers?: boolean;
+  trackOpens?: boolean;
 }
 
 /** OpenAPI ShortLinkResponse. */

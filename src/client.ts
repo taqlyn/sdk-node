@@ -59,6 +59,10 @@ export class TaqlynClient {
     }
     if (input.params !== undefined) bodyObj.params = input.params;
     if (input.env !== undefined) bodyObj.env = input.env;
+    if (input.trackUniqueUsers !== undefined) {
+      bodyObj.trackUniqueUsers = input.trackUniqueUsers;
+    }
+    if (input.trackOpens !== undefined) bodyObj.trackOpens = input.trackOpens;
 
     const body = JSON.stringify(bodyObj);
     const ts = this.now();
