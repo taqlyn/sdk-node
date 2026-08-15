@@ -1,5 +1,7 @@
 # @taqlyn/sdk-node
 
+**Full guide:** [Node.js](../../apps/docs/content/server/node.md) on the docs site.
+
 Taqlyn **server** SDK for Node.js / TypeScript. Signs privileged REST with an
 Ed25519 **private key** (never send `sk_*` alone — use the PKCS#8 PEM issued
 once when credentials are created).
