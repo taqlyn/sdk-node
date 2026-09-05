@@ -94,6 +94,12 @@ bun run typecheck
 bun run build
 ```
 
+## CI/CD & NPM Publishing
+
+Published via `.github/workflows/publish.yml` using **Tokenless OIDC Trusted Publishing**:
+- **Zero static tokens:** Authenticates with `registry.npmjs.org` via ambient GitHub Actions OIDC (`id-token: write`).
+- **Sigstore Provenance:** Cryptographically signed provenance published with `--provenance`.
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).
