@@ -25,7 +25,9 @@ cd packages/sdk-node && bun install && bun run build
 ## Quickstart — create a short link
 
 ```bash
-export TAQLYN_BASE_URL=https://api.rutvik.qzz.io
+# Optional override: defaults to https://api.taqlyn.com in production
+# export TAQLYN_BASE_URL=https://api.taqlyn.com
+
 export TAQLYN_CLIENT_ID=app_test_...          # from Keys.issue (sandbox)
 export TAQLYN_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----
 ...
@@ -35,8 +37,8 @@ export TAQLYN_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----
 ```ts
 import { TaqlynClient } from "@taqlyn/sdk-node";
 
+// Zero-config: baseUrl defaults to process.env.TAQLYN_BASE_URL or "https://api.taqlyn.com"
 const client = new TaqlynClient({
-  baseUrl: process.env.TAQLYN_BASE_URL!,
   clientId: process.env.TAQLYN_CLIENT_ID!,
   privateKey: process.env.TAQLYN_PRIVATE_KEY!, // PKCS#8 PEM (not sk_*)
 });

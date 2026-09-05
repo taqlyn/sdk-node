@@ -27,9 +27,11 @@ export interface ShortLink {
   appId: string;
 }
 
+export const DEFAULT_API_BASE_URL = "https://api.taqlyn.com";
+
 export interface TaqlynClientOptions {
-  /** API origin, e.g. `https://api.example.com` or `http://localhost:8080`. */
-  baseUrl: string;
+  /** API origin, e.g. `https://api.taqlyn.com` or `http://localhost:8080`. Defaults to `process.env.TAQLYN_BASE_URL` || `process.env.TAQLYN_API_URL` || `DEFAULT_API_BASE_URL`. */
+  baseUrl?: string;
   /** `app_test_*` (sandbox) or `app_live_*` (production). */
   clientId: string;
   /**

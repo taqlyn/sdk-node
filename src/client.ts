@@ -7,6 +7,7 @@ import type {
   ShortLink,
   TaqlynClientOptions,
 } from "./types.js";
+import { DEFAULT_API_BASE_URL } from "./types.js";
 
 const SHORT_LINKS_PATH = "/v1/short-links";
 
@@ -23,9 +24,6 @@ export class TaqlynClient {
   private readonly now: () => number;
 
   constructor(opts: TaqlynClientOptions) {
-    if (!opts.baseUrl?.trim()) {
-      throw new Error("baseUrl is required");
-    }
     if (!opts.clientId?.trim()) {
       throw new Error("clientId is required");
     }
@@ -35,7 +33,15 @@ export class TaqlynClient {
     ) {
       throw new Error("clientId must start with app_test_ or app_live_");
     }
-    this.baseUrl = opts.baseUrl.replace(/\/+$/, "");
+    const envUrl =
+      typeof process !== "undefined" && process.env
+        ? process.env.TAQLYN_BASE_URL || process.env.TAQLYN_API_URL
+        : undefined;
+    const rawUrl = opts.baseUrl || envUrl || DEFAULT_API_BASE_URL;
+    if (!rawUrl?.trim()) {
+      throw new Error("baseUrl is required");
+    }
+    this.baseUrl = rawUrl.replace(/\/+$/, "");
     this.clientId = opts.clientId.trim();
     this.privateKey = loadPrivateKey(opts.privateKey);
     this.fetchImpl = opts.fetch ?? globalThis.fetch.bind(globalThis);
