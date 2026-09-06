@@ -1,6 +1,10 @@
 {
   "name": "@taqlyn/sdk-node",
   "version": "0.6.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Taqlyn Node/TypeScript server SDK — Ed25519-signed ShortLink create",
   "type": "module",
   "main": "./dist/index.js",
