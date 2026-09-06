@@ -14,35 +14,31 @@ concurrency:
 
 permissions:
   contents: read
-  id-token: write # Required for NPM Trusted Publishing (OIDC tokenless) & Sigstore provenance
+  id-token: write
 
 jobs:
   publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: Setup Bun.js
-        uses: oven-sh/setup-bun@v2
+          node-version: "22"
+          registry-url: https://registry.npmjs.org
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
+      - name: Install npm for trusted publishing
+        run: npm install -g npm@11.5.2
       - name: Install dependencies
         run: bun install --frozen-lockfile || bun install
-
       - name: Build TypeScript library
         run: bun run build
-
       - name: Run tests
         run: bun test
-
-      - name: Publish to NPM (Tokenless Trusted Publishing)
-        # Ephemeral OIDC token exchange — zero static NPM_TOKEN secrets required
+      - name: Publish to NPM (OIDC Trusted Publishing)
         run: npm publish --provenance --access public
