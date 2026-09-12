@@ -5,6 +5,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taqlyn/sdk-node.git"
+  },
   "description": "Taqlyn Node/TypeScript server SDK — Ed25519-signed ShortLink create",
   "type": "module",
   "main": "./dist/index.js",
