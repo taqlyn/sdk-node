@@ -44,4 +44,4 @@ jobs:
       - name: Run tests
         run: bun test
       - name: Publish to NPM (OIDC Trusted Publishing)
-        run: npm publish --provenance --access public
+        run: npm stage publish --provenance --access public
