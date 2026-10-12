@@ -9,6 +9,7 @@ export {
 } from "./signer.js";
 export type {
   CreateShortLinkInput,
+  PatchShortLinkInput,
   ShortLink,
   ShortLinkEnv,
   ShortLinkMode,

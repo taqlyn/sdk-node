@@ -12,6 +12,8 @@ export interface CreateShortLinkInput {
   env?: ShortLinkEnv;
   trackUniqueUsers?: boolean;
   trackOpens?: boolean;
+  /** Gap 1 — optional per-link expand UX override. */
+  resolveMode?: "await" | "optimistic";
 }
 
 /** OpenAPI ShortLinkResponse. */
@@ -25,6 +27,15 @@ export interface ShortLink {
   env: ShortLinkEnv | string;
   orgId: string;
   appId: string;
+  destinationPath?: string;
+  resolveMode?: "await" | "optimistic";
+}
+
+export interface PatchShortLinkInput {
+  destinationWeb?: string;
+  destinationPath?: string;
+  mode?: ShortLinkMode;
+  resolveMode?: "await" | "optimistic" | null;
 }
 
 export const DEFAULT_API_BASE_URL = "https://api.taqlyn.com";

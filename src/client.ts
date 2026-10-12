@@ -4,6 +4,7 @@ import { TaqlynApiError } from "./errors.js";
 import { loadPrivateKey, signedHeaders } from "./signer.js";
 import type {
   CreateShortLinkInput,
+  PatchShortLinkInput,
   ShortLink,
   TaqlynClientOptions,
 } from "./types.js";
@@ -69,6 +70,7 @@ export class TaqlynClient {
       bodyObj.trackUniqueUsers = input.trackUniqueUsers;
     }
     if (input.trackOpens !== undefined) bodyObj.trackOpens = input.trackOpens;
+    if (input.resolveMode !== undefined) bodyObj.resolveMode = input.resolveMode;
 
     const body = JSON.stringify(bodyObj);
     const ts = this.now();
@@ -83,6 +85,65 @@ export class TaqlynClient {
 
     const res = await this.fetchImpl(`${this.baseUrl}${SHORT_LINKS_PATH}`, {
       method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        ...headers,
+      },
+      body,
+    });
+
+    const text = await res.text();
+    let parsed: unknown = undefined;
+    if (text) {
+      try {
+        parsed = JSON.parse(text) as unknown;
+      } catch {
+        parsed = { message: text };
+      }
+    }
+
+    if (!res.ok) {
+      throw new TaqlynApiError(res.status, parsed);
+    }
+    return parsed as ShortLink;
+  }
+
+  /**
+   * Patch a short link (`PATCH /v1/short-links/{id}`).
+   * Pass `resolveMode: null` to clear a per-link override.
+   */
+  async patchShortLink(id: string, input: PatchShortLinkInput): Promise<ShortLink> {
+    const trimmed = id?.trim();
+    if (!trimmed) {
+      throw new Error("id is required");
+    }
+    const bodyObj: Record<string, unknown> = {};
+    if (input.destinationWeb !== undefined) {
+      bodyObj.destinationWeb = input.destinationWeb;
+    }
+    if (input.destinationPath !== undefined) {
+      bodyObj.destinationPath = input.destinationPath;
+    }
+    if (input.mode !== undefined) bodyObj.mode = input.mode;
+    if (input.resolveMode !== undefined) {
+      bodyObj.resolveMode = input.resolveMode === null ? "" : input.resolveMode;
+    }
+
+    const body = JSON.stringify(bodyObj);
+    const path = `${SHORT_LINKS_PATH}/${encodeURIComponent(trimmed)}`;
+    const ts = this.now();
+    const headers = signedHeaders({
+      privateKey: this.privateKey,
+      clientId: this.clientId,
+      method: "PATCH",
+      path,
+      body,
+      unixTimestamp: ts,
+    });
+
+    const res = await this.fetchImpl(`${this.baseUrl}${path}`, {
+      method: "PATCH",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
